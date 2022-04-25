@@ -41,6 +41,7 @@ function createTableEntry(data) {
     header.innerHTML = data.Name;
     row.appendChild(header);
 
+    createTableCell(data.NNumber, row);
     createTableCell(data.Username, row);
     createTableCell(data.Language, row);
     createTableCell(data.Experience, row);

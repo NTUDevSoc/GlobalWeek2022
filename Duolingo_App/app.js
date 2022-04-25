@@ -25,29 +25,30 @@ app.get('/settings', (req, res) => {
 
 app.post('/submit', (req, res) => {
     let user = req.body;
-    let duoUser = duo.getDuolingoUser(user.username);
-
+    let duoUser = duo.getDuolingoUser(user.username); 
     duo.getMetadata(duoUser).then(data => {
         userData = data.users[0];
         duoUserInfo = duo.getInfoOnLanguage(userData, user.language);
         let entry = {
             "Name": user.name,
+            "NNumber": user.NNumber,
             "Username": user.username,
             "Language": user.language,
             "Experience": duoUserInfo.xp,
             "Crowns": duoUserInfo.crowns,
             "Level": duoUserInfo.level
         };
-
+        
         fs.readFile(path.join(__dirname, '/public/players.json'), (err, data) => {
             let json = JSON.parse(data);
             json.players.push(entry);
 
             fs.writeFileSync(path.join(__dirname, '/public/players.json'), JSON.stringify(json), err => {
                 if (err) throw err
-            });
+                });
         });
     });
+    
 
     res.redirect('/update');
 });
